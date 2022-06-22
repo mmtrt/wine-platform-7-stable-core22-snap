@@ -1,0 +1,1 @@
+# wine-platform-7-stable-core22-snap
