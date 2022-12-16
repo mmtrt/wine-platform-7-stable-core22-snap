@@ -12,7 +12,7 @@ base: core22
 compression: lzo
 
 slots:
-  wine-7-stable:
+  wine-7-stable-c22:
     interface: content
     source:
       read:
