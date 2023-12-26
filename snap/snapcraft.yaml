@@ -25,13 +25,13 @@ parts:
       - dpkg
       - wget
     override-build: |
-      snapcraftctl build
+      craftctl default
 
       ARCH="$(dpkg --print-architecture)"
       WINE_VER="7.0.2"
 
       # set snap version
-      snapcraftctl set-version "$WINE_VER"
+      craftctl set version="$WINE_VER"
 
       # wget and dpkg extract the wine debs
       ## supporting binaries which are arch-specific but the same filenames in both architectures so we only install the native architecture
@@ -48,16 +48,16 @@ parts:
       for DEB_URL in ${DEB_URLS}; do
         DEB=$(basename "${DEB_URL}")
         echo "Downloading ${DEB_URL}..."
-        wget --quiet "${DEB_URL}" -O "${SNAPCRAFT_PART_INSTALL}/${DEB}"
+        wget --quiet "${DEB_URL}" -O "${CRAFT_PART_INSTALL}/${DEB}"
         echo "Unpacking ${DEB}..."
-        dpkg -x "${SNAPCRAFT_PART_INSTALL}/${DEB}" ${SNAPCRAFT_PART_INSTALL}
-        rm -f "${SNAPCRAFT_PART_INSTALL}/${DEB}"
+        dpkg -x "${CRAFT_PART_INSTALL}/${DEB}" ${CRAFT_PART_INSTALL}
+        rm -f "${CRAFT_PART_INSTALL}/${DEB}"
       done
 
       # Cleanup
-      rm -rf ${SNAPCRAFT_PART_INSTALL}/opt/wine-stable/share/applications
-      rm -rf ${SNAPCRAFT_PART_INSTALL}/opt/wine-stable/share/man
-      rm -rf ${SNAPCRAFT_PART_INSTALL}/usr
+      rm -rf ${CRAFT_PART_INSTALL}/opt/wine-stable/share/applications
+      rm -rf ${CRAFT_PART_INSTALL}/opt/wine-stable/share/man
+      rm -rf ${CRAFT_PART_INSTALL}/usr
 
       # Disable winemenubuilder
       sed -i 's/winemenubuilder.exe -a -r/winemenubuilder.exe -r/g' "${SNAPCRAFT_PART_INSTALL}"/opt/wine-stable/share/wine/wine.inf
